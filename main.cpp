@@ -1,20 +1,22 @@
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <chrono>
-#include <algorithm>
-#include "bloom_filter.h"
+#include "Testing.cpp"
 
 using namespace std;
 
-vector<string> load_csv(const string &filename) {
-    vector<string> data;
-    ifstream file(filename);
-    string line;
-    while (getline(file, line)) {
-        data.push_back(line);
+std::vector<std::string> load_csv(const std::string &filename) {
+    std::vector<std::string> data;
+    std::ifstream file(filename);
+    std::string line;
+    
+    while (std::getline(file, line)) {
+        std::istringstream line_stream(line);
+        std::string word;
+        
+        while (line_stream >> word) {
+            data.push_back(word);
+        }
     }
+    
     return data;
 }
 
@@ -28,33 +30,21 @@ int main() {
         bloom_filter.add(name);
     }
 
+    cout << baby_names.size() << " baby names loaded." << endl;
+
     vector<string> search_names = load_csv("Film-Names.csv");
-    chrono::high_resolution_clock::time_point start;
-    double duration;
+    cout << search_names.size() << " movie names loaded." << endl;
 
-    // Search without Bloom filter
-    start = chrono::high_resolution_clock::now();
-    for (const auto &name : search_names) {
-        bool found = (find(baby_names.begin(), baby_names.end(), name) != baby_names.end());
-    }
-    duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start).count();
-    cout << "Search without Bloom filter took " << duration << " microseconds." << endl;
-
-    // Search with Bloom filter
-    start = chrono::high_resolution_clock::now();
-    long long count1 = 0;
-    long long count2 = 0;
-    for (const auto &name : search_names) {
-        if (bloom_filter.possibly_contains(name)) {
-            bool found = (find(baby_names.begin(), baby_names.end(), name) != baby_names.end());
-            count1++;
-        }
-        else{
-            count2++;
+    string filename = "Results.txt";
+    ofstream file;
+    file.open(filename);
+    file << "N;p;Time without Bloom filter;Time with Bloom filter;Error rate" << endl;
+    file.close();
+    for (int i = 10; i < 17; i+=2){
+        for (double p = 0; p <= 1.0 ; p+=0.25){
+            Testing(pow(2,i), p, bloom_filter, baby_names, search_names, filename);
         }
     }
-    duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start).count();
-    cout << "Search with Bloom filter took " << duration << " microseconds." << endl;
 
     return 0;
 }

@@ -4,6 +4,7 @@
 #include <vector>
 #include <functional>
 #include <string>
+#include <cmath>
 
 class BloomFilter {
 public:

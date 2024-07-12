@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "string": "cpp",
+        "chrono": "cpp",
+        "algorithm": "cpp",
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp"
+    }
+}

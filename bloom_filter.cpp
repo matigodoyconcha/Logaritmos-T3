@@ -1,5 +1,4 @@
 #include "bloom_filter.h"
-#include <cmath>
 
 BloomFilter::BloomFilter(size_t size, int num_hashes)
     : size(size), num_hashes(num_hashes), bits(size, false) {
