@@ -12,7 +12,7 @@ public:
     int get_hash(int index, const std::string& x) const; // Marked as const
 
 private:
-    void ensure_a_size(int length) const; // Marked as const
+    void ensure_a_size(int length, const std::string& x) const; // Marked as const
 
     int k_, m_, p_;
     std::vector<std::function<int(const std::string&)>> generators_;

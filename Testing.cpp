@@ -14,12 +14,13 @@ void Testing(int N, double p, BloomFilter &filter, vector<string> &baby_names, v
     vector<string> search_names;
     int num_baby_names = static_cast<int>(N * p);
     int num_movie_names = N - num_baby_names;
-    cout << "N: "<< N << " movie_name :" << num_movie_names << endl;
+
     
     // Initialize a random number generator
     random_device rd;
-    mt19937 gen(rd());
-    
+    auto seed = rd() ^ std::chrono::system_clock::now().time_since_epoch().count();
+    mt19937 gen(seed);
+
     // Select random elements from baby_names
     if (num_baby_names > 0) {
         sample(baby_names.begin(), baby_names.end(), back_inserter(search_names), num_baby_names, gen);
@@ -27,7 +28,6 @@ void Testing(int N, double p, BloomFilter &filter, vector<string> &baby_names, v
     
     // Select random elements from movie_names
     if (num_movie_names > movie_names.size()) {
-        cout << "N es muy grande" << N << p << endl;
         while (search_names.size() < N) {
             int remaining = N - search_names.size();
             int count = min(static_cast<int>(movie_names.size()), remaining);
@@ -37,6 +37,7 @@ void Testing(int N, double p, BloomFilter &filter, vector<string> &baby_names, v
         sample(movie_names.begin(), movie_names.end(), back_inserter(search_names), num_movie_names, gen);
     }
     ofstream file;
+    //cout << "Cantidad de movies names: "<<search_names.size() << endl;
 
     // Open the file in append mode
     file.open(filename, ios::app);
@@ -64,6 +65,8 @@ void Testing(int N, double p, BloomFilter &filter, vector<string> &baby_names, v
     }
     duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start).count();
     file << duration << ";";
+
+    cout << "Cantidad de falsos positivos :" << count1-N*p << endl;
    
     // Calculate error rate
     file << (count1 - N*p)/(N) << ";";
