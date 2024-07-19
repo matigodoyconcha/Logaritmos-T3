@@ -10,7 +10,7 @@ public:
     BloomFilter(size_t size, int num_hashes, int prime);
     void add(const std::string &data);
     bool possibly_contains(const std::string &data) const;
-    void amount_of_true();
+    int amount_of_true();
 
 private:
     size_t size;

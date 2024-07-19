@@ -26,12 +26,12 @@ bool BloomFilter::possibly_contains(const std::string &data) const {
     }
     return true;
 }
-void BloomFilter::amount_of_true(){
+int BloomFilter::amount_of_true(){
     int count = 0;
     for(int i = 0; i<size;i++){
         if (bits[i])
             count++;
 
     }
-    cout << "Cantidad de bits true: " <<  count << endl;
+    return count;
 }

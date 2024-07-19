@@ -37,13 +37,15 @@ std::vector<std::string> filter_movies(const std::vector<std::string>& movies, c
 int main() {
     const size_t bloom_filter_size = 93890*10;
     const int num_hashes = 7;
-    const int prime = 908521; 
+    const int prime = 908567; 
     BloomFilter bloom_filter(bloom_filter_size, num_hashes, prime);
 
     vector<string> baby_names = load_csv("Popular-Baby-Names-Final.csv");
     for (const auto &name : baby_names) {
         bloom_filter.add(name);
     }
+
+    cout << "Cantidad de bits en true: " << bloom_filter.amount_of_true() << endl;
 
     cout << baby_names.size() << " baby names loaded." << endl;
 
